@@ -16,11 +16,12 @@ app.get('/health', (req, res) => {
 app.get('/', (req, res) => {
   const hostname = require('os').hostname();
   res.json({
-    message: '🚀 Hello from K8 Test Demo - Pipeline Working! 🎉',
+    message: '✨ K8 Test Demo - Full Stack CI/CD Pipeline Verified! ✨',
     hostname: hostname,
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development',
-    version: '1.1.0'
+    version: '1.2.0',
+    pipeline_test: 'End-to-End Test Successful'
   });
 });
 
