@@ -16,6 +16,6 @@ spec:
         spec:
             containers:
             - name: {{ include "k8test.name" . }}
-                image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-                ports:
-                - containerPort: {{ .Values.service.port }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              ports:
+              - containerPort: {{ .Values.service.port }}
