@@ -1,5 +1,5 @@
 image:
-    repository: myacr.azurecr.io/k8test
+    repository: k8demoacr.azurecr.io/k8test
     tag: "latest"
     pullPolicy: IfNotPresent
 replicaCount: 1
