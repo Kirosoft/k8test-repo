@@ -6,7 +6,7 @@ on:
             - main
 
 env:
-    REGISTRY: myacr.azurecr.io
+    REGISTRY: k8demoacr.azurecr.io
     IMAGE_NAME: k8test
     GITOPS_REPO: kirosoft/k8test-gitops-repo
     GITOPS_PATH: envs/dev/k8test
