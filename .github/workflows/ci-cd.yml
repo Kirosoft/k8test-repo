@@ -24,6 +24,9 @@ jobs:
               with:
                   creds: '{"clientId":"${{ secrets.client_id }}","clientSecret":"${{ secrets.client_secret }}","tenantId":"${{ secrets.tenant_id }}","subscriptionId":"${{ secrets.subscription_id }}"}'
 
+            - name: Login to Azure Container Registry
+              run: az acr login --name k8demoacr
+
             - name: Build and push image
               run: |
                   docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
