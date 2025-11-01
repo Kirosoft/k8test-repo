@@ -22,7 +22,7 @@ jobs:
             - name: Azure login
               uses: azure/login@v1
               with:
-                  creds: ${{ secrets.AZURE_CREDENTIALS }}
+                  creds: '{"clientId":"${{ secrets.client_id }}","clientSecret":"${{ secrets.client_secret }}","tenantId":"${{ secrets.tenant_id }}","subscriptionId":"${{ secrets.subscription_id }}"}'
 
             - name: Build and push image
               run: 
