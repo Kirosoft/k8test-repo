@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: {{ include "k8test.fullname" . }}
+    labels:
+        app: {{ include "k8test.name" . }}
+spec:
+    replicas: {{ .Values.replicaCount }}
+    selector:
+        matchLabels:
+            app: {{ include "k8test.name" . }}
+    template:
+        metadata:
+            labels:
+                app: {{ include "k8test.name" . }}
+        spec:
+            containers:
+            - name: {{ include "k8test.name" . }}
+                image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+                ports:
+                - containerPort: {{ .Values.service.port }}

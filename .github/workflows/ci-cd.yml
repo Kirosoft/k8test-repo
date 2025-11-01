@@ -1,0 +1,56 @@
+name: Build and Promote to Dev
+
+on:
+    push:
+        branches:
+            - main
+
+env:
+    REGISTRY: myacr.azurecr.io
+    IMAGE_NAME: k8test
+    GITOPS_REPO: kirosoft/k8test-gitops-repo
+    GITOPS_PATH: envs/dev/k8test
+    VALUES_FILE: values.yaml
+
+jobs:
+    build-push:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout app repo
+              uses: actions/checkout@v4
+
+            - name: Azure login
+              uses: azure/login@v1
+              with:
+                  creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+            - name: Build and push image
+              run: 
+                  docker build -t ${{ env.REGISTRY }}/{{ env.IMAGE_NAME }}:${{ github.sha }} . 
+                  docker push ${{ env.REGISTRY }}/{{ env.IMAGE_NAME }}:${{ github.sha }}
+
+            - name: Update gitops values
+              uses: actions/checkout@v4
+              with:
+                  repository: kirosoft/k8test-gitops-repo
+                  token: ${{ secrets.GITOPS_TOKEN }}
+                  path: gitops-repo
+
+            - name: Install yq
+              run: |
+                  sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+                  sudo chmod +x /usr/local/bin/yq
+
+            - name: Set image tag in values
+              run: |
+                  cd gitops-repo/${{ env.GITOPS_PATH }}
+                  yq e -i ".image.tag = \"${{ github.sha }}\"" ${{ env.VALUES_FILE }}
+                  git config user.name "github-actions"
+                  git config user.email "actions@github.com"
+                  git add ${{ env.VALUES_FILE }}
+                  git commit -m "ci: update image tag to $^{{ github.sha ^}}"
+                  git push origin HEAD:main
+
+            - name: Notify Argo CD 
+              run: 
+                  echo Argo CD will pick up change automatically
