@@ -8,7 +8,7 @@ app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
-    version: process.env.npm_package_version || '1.4.0'
+    version: process.env.npm_package_version || '1.5.0'
   });
 });
 
@@ -16,11 +16,11 @@ app.get('/health', (req, res) => {
 app.get('/', (req, res) => {
   const hostname = require('os').hostname();
   res.json({
-    message: '🎯 K8 Test Demo - V2.0! 🚀',
+    message: '🎯 K8 Test Demo - V3.0! 🚀',
     hostname: hostname,
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development',
-    version: '1.4.0',
+    version: '1.5.0',
     deploy_status: 'Clean Automated Deployment',
     last_updated: new Date().toLocaleDateString()
   });
